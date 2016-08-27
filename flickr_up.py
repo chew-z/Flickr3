@@ -8,6 +8,21 @@ import re
 import webbrowser
 import flickrapi
 import flickr_cli
+try:
+    from os import scandir, walk
+except ImportError:
+    from scandir import scandir, walk
+
+
+def folders(path):
+    for entry in scandir(path):
+        if not entry.name.startswith(path) and entry.is_dir():
+            yield entry.name
+
+def files(path):
+    for entry in scandir(path):
+       if not entry.name.startswith('.') and entry.is_file():
+           yield entry.path
 
 
 def read_items(path):
@@ -62,12 +77,16 @@ def upload_dir_rec0(flickr, directory, depth, tags, photoset, options):
     log = options.log
 
     try:
-        files = [('%s/%s' % (directory, x)) for x in os.listdir(directory)]
+        # files = [('%s/%s' % (directory, x)) for x in os.listdir(directory)]
+        files = files(directory)
+        dirs = folders(directory)
     except OSError:
         files = []
-    regs = [x for x in files if (os.path.isfile(
-        x) and not is_excluded(x) and not is_uploaded(x, log))]
-    dirs = [x for x in files if os.path.isdir(x)]
+        dirs = []
+    # regs = [x for x in files if (os.path.isfile(
+    #    x) and not is_excluded(x) and not is_uploaded(x, log))]
+    regs = [x for x in files if (not is_excluded(x) and not is_uploaded(x, log))]
+    # dirs = [x for x in files if os.path.isdir(x)]
     files = None
 
     print(directory, tags0, photoset0)
