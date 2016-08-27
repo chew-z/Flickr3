@@ -47,12 +47,12 @@ And then I started making mistakes on my own account.
 ```
 - now using argparse insead of optparse
 
-I have been playing with argparse with fuzzy vision of what I want from it in the (not too distant) future . Some options are not handled by argparse but implemented in a code.
+I have been playing with argparse with fuzzy vision of what I want from it in the (not too distant) future . ~~Some options are not handled by argparse but implemented in a code.~~
 
 - log file is now opened for appending not writing so it is not flushed on each run. Just remember to delete logfile if you want to start anew.
 ```
                  # fd = open(path, 'w', 1)
-                      fd = open(path, 'a', 1)
+                 fd = open(path, 'a', 1)
 ```
 - on second and following runs (using the same logfile) we are uploading only imges that has't been already uploaded. It is usefull cause there are always some fails when uploading large folders, we could also no safely stop the upload without starting over from zero.
 
